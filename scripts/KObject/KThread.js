@@ -34,6 +34,9 @@ define(['KObject'], function(KObject){
             KTHREADS[this.id=KTHREADS.count++] = this;
             console.log("Created Thread with ID " + this.id);
         },
+        setInterval: function(i){
+            this.interval = i;
+        },
         run: function(){
         },
         stop: function(){
