@@ -18,27 +18,29 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-var KCanvas = KThread.extend({
-    init: function(id){
-        this.constructor.super.call(this, this.update, 1000/30);
-        this.canvasElement = K(id);
-        this.height = this.canvasElement.height;
-        this.width = this.canvasElement.width;
-        this.canvas = this.canvasElement.getContext("2d");
-        this.constructor.super.call(this);
-        this.fps = 30;
-        this.scene = null;
+define(['KThread', 'KObject', 'KBase'], function(KThread, KObject, K){
+    var KCanvas = KThread.extend({
+        init: function(id){
+            this.constructor.super.call(this, this.update, 1000/30);
+            this.canvasElement = K(id);
+            this.height = this.canvasElement.height;
+            this.width = this.canvasElement.width;
+            this.canvas = this.canvasElement.getContext("2d");
+            this.constructor.super.call(this);
+            this.fps = 30;
+            this.scene = null;
 
-    },
-    clear: function(){
-        this.canvas.fillStyle="white";
-        this.canvas.fillRect(0,0,this.canvasElement.width,this.canvasElement.width);
-    },
-    update: function(){
-        this.clear();
-        if(this.scene != null && this.scene != undefined){
-            this.scene.emit("update");
-            this.scene.emit("draw", this.canvas);
+        },
+        clear: function(){
+            this.canvas.fillStyle="white";
+            this.canvas.fillRect(0,0,this.canvasElement.width,this.canvasElement.width);
+        },
+        update: function(){
+            this.clear();
+            if(this.scene != null && this.scene != undefined){
+                this.scene.emit("update");
+                this.scene.emit("draw", this.canvas);
+            }
         }
-    }
+    });
 });

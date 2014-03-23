@@ -18,12 +18,14 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-function K(x){
-    var result;
-//     if(isNaN(document) || document == undefined) throw Error("document variable doesn't exist. We're probably not running in a browser.");
-    if(typeof x === 'string' || x instanceof String){
-        if(x[0] == '#') return document.getElementById(x.substring(1));
-        else if(x[0] == '.') return document.getElementsByClassName(x.substring(1));
-        else return document.getElementsByTagName(x);
+define(function(){
+    return function(x){
+        var result;
+        //if(isNaN(document) || document == undefined) throw Error("document variable doesn't exist. We're probably not running in a browser.");
+        if(typeof x === 'string' || x instanceof String){
+            if(x[0] == '#') return document.getElementById(x.substring(1));
+            else if(x[0] == '.') return document.getElementsByClassName(x.substring(1));
+            else return document.getElementsByTagName(x);
+        }
     }
 }

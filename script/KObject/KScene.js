@@ -18,8 +18,10 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-var KScene = KObject.extend({
-    init: function(){
-        this.constructor.super.call(this);
-    }
+define(['KObject'], function(KObject){
+    return KObject.extend({
+        init: function(){
+            this.constructor.super.call(this);
+        }
+    });
 });
