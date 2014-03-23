@@ -9,6 +9,14 @@ require.config({
     }
 });
 
+var KIMAGES = {
+    count:0
+};
+
+var KTHREADS = {
+    count:0
+};
+
 define(["KThread", "KBase"],function(KThread, K){
     var m = new KThread(function(){
             this.docbody[0].innerHTML += "Test";

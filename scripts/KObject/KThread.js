@@ -17,9 +17,6 @@
  *   ---
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
-var KTHREADS = {
-    count:0
-};
 
 define(['KObject'], function(KObject){
 
