@@ -31,6 +31,10 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
             this.scene = null;
 
         },
+        this.setFrameRate(fps){
+            if(fps>1) this.fps = fps;
+            this.setInterval(fps);
+        },
         clear: function(){
             this.canvas.fillStyle="white";
             this.canvas.fillRect(0,0,this.canvasElement.width,this.canvasElement.width);
