@@ -28,4 +28,4 @@ define(function(){
             else return document.getElementsByTagName(x);
         }
     }
-}
+});

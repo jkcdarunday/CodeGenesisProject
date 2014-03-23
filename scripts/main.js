@@ -9,11 +9,12 @@ require.config({
     }
 });
 
-define(["KThread"],function(KThread){
+define(["KThread", "KBase"],function(KThread, K){
     var m = new KThread(function(){
-            console.log("Test");
+            this.docbody[0].innerHTML += "Test";
         },
         1000
     );
+    m.docbody = K("body");
     m.start();
 });

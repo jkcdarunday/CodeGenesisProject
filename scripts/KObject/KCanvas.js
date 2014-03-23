@@ -18,7 +18,7 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-define(['KThread', 'KObject', 'KBase'], function(KThread, KObject, K){
+define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KScene, K){
     var KCanvas = KThread.extend({
         init: function(id){
             this.constructor.super.call(this, this.update, 1000/30);
