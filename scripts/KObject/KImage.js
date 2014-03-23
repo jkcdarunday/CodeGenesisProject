@@ -20,8 +20,63 @@
 
 define(['KObject'], function(KObject){
     return KObject.extend({
-        init: function(){
+        init: function(imageSet){
             this.constructor.super.call(this);
+            this.imageSet = imageSet;
+        },
+        setType: function(type){
+            this.type = type;
+        },
+        setBlockSize: function(x, y){
+            this.blockX = x;
+            if(y != undefined && y!=null) this.blockY = y;
+            else this.blockY = x;
+            this.sizeX = this.blockX;
+            this.sizeY = this.blockY;
+        },
+        setImagePosition: function(x,y){
+            this.imagePositionX = x;
+            this.imagePositionY = y;
+        },
+        setCanvasPosition: function(x,y){
+            this.canvasPositionX = x;
+            this.canvasPositionY = y;
+        }
+        setSize: function(x,y){
+            this.sizeX = x;
+            this.sizeY = y;
+        },
+        slots{
+            draw: function(canvas){
+                if(this.type == 'BLOCK'){
+                    canvas.drawImage(
+                        KIMAGES[this.imageSet],
+                        this.imagePositionX*this.blockX,
+                        this.imagePositionY*this.blockY,
+                        this.sizeX,
+                        this.sizeY,
+                        this.canvasPositionX,
+                        this.canvasPositionY,
+                        this.sizeX,
+                        this.sizeY
+                    );
+                } else if(this.type == 'NORMAL'){
+                    canvas.drawImage(
+                        KIMAGES[this.imageSet],
+                        this.imagePositionX,
+                        this.imagePositionY,
+                        this.sizeX,
+                        this.sizeY,
+                        this.canvasPositionX,
+                        this.canvasPositionY,
+                        this.sizeX,
+                        this.sizeY
+                    );
+                }
+            },
+            update: function(){
+
+            }
         }
     });
 });
