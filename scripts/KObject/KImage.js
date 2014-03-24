@@ -132,11 +132,11 @@ define(['KObject'], function(KObject){
                         else
                             this.canvasPositionX+=this.animationInterval;
                     }else if (this.animationType == "EASE"){
-                        var delta = this.targetPositionX-this.canvasPositionX;
-                        if(Math.abs(delta) < 3)
-                            this.canvasPositionX = this.targetPositionX;
-                        else this.canvasPositionX += delta/this.animationInterval;
+                        this.canvasPositionX += delta/this.animationInterval;
                     }
+                    var deltaX = this.targetPositionX-this.canvasPositionX;
+                    if(Math.abs(deltaX) < this.animationInterval)
+                        this.canvasPositionX = this.targetPositionX;
                 }
                 if(yUnequal = this.targetPositionY != this.canvasPositionY){
                     if(this.animationType == "IMMEDIATE"){
@@ -147,11 +147,11 @@ define(['KObject'], function(KObject){
                         else
                             this.canvasPositionY+=this.animationInterval;
                     } else if (this.animationType == "EASE"){
-                        var delta = this.targetPositionY-this.canvasPositionY;
-                        if(Math.abs(delta) < 3)
-                            this.canvasPositionY = this.targetPositionY;
-                        else this.canvasPositionY += delta/this.animationInterval;
+                        this.canvasPositionY += delta/this.animationInterval;
                     }
+                    var deltaY = this.targetPositionY-this.canvasPositionY;
+                    if(Math.abs(deltaY) < this.animationInterval)
+                        this.canvasPositionY = this.targetPositionY;
                 }
                 yNowEqual = this.targetPositionY == this.canvasPositionY;
                 xNowEqual = this.targetPositionX == this.canvasPositionX;
@@ -166,11 +166,11 @@ define(['KObject'], function(KObject){
                         else
                             this.alpha += this.fadeInterval;
                     } else if (this.fadeType == "EASE"){
-                        var delta = this.targetAlpha-this.alpha;
-                        if(Math.abs(delta) < 3)
-                            this.alpha = this.targetAlpha;
-                        else this.alpha += delta/this.fadeInterval;
+                        this.alpha += delta/this.fadeInterval;
                     }
+                    var fadeDelta = this.targetAlpha-this.alpha;
+                    if(Math.abs(fadeDelta) < this.fadeInterval)
+                        this.alpha = this.targetAlpha;
                 }
             }
         }
