@@ -20,8 +20,21 @@
 
 define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KScene, K){
     var KCanvas = KThread.extend({
-        init: function(id){
+        init: function(id, hasFrameMonitor){
             KThread.call(this, this.update, 1000/30);
+
+            if(hasFrameMonitor != undefined && hasFrameMonitor){
+                this.frames = 0;
+                this.monitorFrames = true;
+                this.frameMonitor = new KThread(function(){
+                    console.log(this.canvas.frames + "fps");
+                    this.canvas.frames = 0;
+                },
+                1000);
+                this.frameMonitor.canvas = this;
+                this.frameMonitor.start();
+            }
+
             console.log("Created KCanvas " + id + " with interval " + this.interval);
             this.canvasElement = K(id);
             console.log(this.canvasElement);
@@ -35,13 +48,14 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
         },
         setFrameRate: function(fps){
             if(fps>1) this.fps = fps;
-            this.setInterval(fps);
+            this.setInterval(1000/fps);
         },
         clear: function(){
             this.canvas.fillStyle="white";
             this.canvas.fillRect(0,0,this.canvasElement.width,this.canvasElement.width);
         },
         update: function(){
+            if(this.monitorFrames) this.frames++;
             this.clear();
             if(this.scene != null && this.scene != undefined){
                 this.scene.emit("update");
