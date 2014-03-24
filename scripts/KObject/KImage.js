@@ -32,6 +32,10 @@ define(['KObject'], function(KObject){
             if(KIMAGES[imageSet] != undefined)
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
             this.animationType = "EASE";
+            this.alpha = 1.0;
+        },
+        setOpacity: function(opacity){
+            this.alpha = opacity;
         },
         setType: function(type){
             this.type = type;
@@ -66,6 +70,7 @@ define(['KObject'], function(KObject){
         },
         slots:{
             draw: function(canvas){
+                canvas.globalAlpha = this.alpha;
                 if(this.type == 'BLOCK'){
                     canvas.drawImage(
                         KIMAGES[this.imageSet],
@@ -91,9 +96,11 @@ define(['KObject'], function(KObject){
                         this.sizeY
                     );
                 }
+                canvas.globalAlpha = 1.0;
             },
             update: function(){
-                if(this.targetPositionX != this.canvasPositionX){
+                var xUnequal = false, yUnequal = false, yNowEqual = false, xNowEqual = false;
+                if(xUnequal = this.targetPositionX != this.canvasPositionX){
                     if(this.animationType == "LINEAR"){
                         if(this.targetPositionX < this.canvasPositionX)
                             this.canvasPositionX--;
@@ -101,11 +108,12 @@ define(['KObject'], function(KObject){
                             this.canvasPositionX++;
                     }else if (this.animationType == "EASE"){
                         var delta = this.targetPositionX-this.canvasPositionX;
-                        if(delta < 3) this.targetPositionX = this.canvasPositionX;
+                        if(Math.abs(delta) < 3)
+                            this.canvasPositionX = this.targetPositionX;
                         else this.canvasPositionX += delta/18;
                     }
                 }
-                if(this.targetPositionY != this.canvasPositionY){
+                if(yUnequal = this.targetPositionY != this.canvasPositionY){
                     if(this.animationType == "LINEAR"){
                         if(this.targetPositionY < this.canvasPositionY)
                             this.canvasPositionY--;
@@ -113,10 +121,14 @@ define(['KObject'], function(KObject){
                             this.canvasPositionY++;
                     } else if (this.animationType == "EASE"){
                         var delta = this.targetPositionY-this.canvasPositionY;
-                        if(delta < 3) this.targetPositionY = this.canvasPositionY;
-                          else this.canvasPositionY += delta/18;
+                        if(Math.abs(delta) < 3)
+                            this.canvasPositionY = this.targetPositionY;
+                        else this.canvasPositionY += delta/18;
                     }
                 }
+                yNowEqual = this.targetPositionY == this.canvasPositionY;
+                xNowEqual = this.targetPositionX == this.canvasPositionX;
+                if(xUnequal && xNowEqual || yUnequal && yNowEqual) this.emit('inPosition');
             }
         }
     });
