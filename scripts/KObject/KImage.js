@@ -101,7 +101,9 @@ define(['KObject'], function(KObject){
             update: function(){
                 var xUnequal = false, yUnequal = false, yNowEqual = false, xNowEqual = false;
                 if(xUnequal = this.targetPositionX != this.canvasPositionX){
-                    if(this.animationType == "LINEAR"){
+                    if(this.animationType == "IMMEDIATE"){
+                        this.canvasPositionX = this.targetPositionX;
+                    }else if(this.animationType == "LINEAR"){
                         if(this.targetPositionX < this.canvasPositionX)
                             this.canvasPositionX--;
                         else
@@ -114,7 +116,9 @@ define(['KObject'], function(KObject){
                     }
                 }
                 if(yUnequal = this.targetPositionY != this.canvasPositionY){
-                    if(this.animationType == "LINEAR"){
+                    if(this.animationType == "IMMEDIATE"){
+                        this.canvasPositionY = this.targetPositionY;
+                    }else if(this.animationType == "LINEAR"){
                         if(this.targetPositionY < this.canvasPositionY)
                             this.canvasPositionY--;
                         else
