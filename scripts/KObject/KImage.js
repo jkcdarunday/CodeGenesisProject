@@ -32,10 +32,11 @@ define(['KObject'], function(KObject){
             if(KIMAGES[imageSet] != undefined)
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
             this.animationType = "EASE";
+            this.animationInterval = 18;
             this.alpha = 1.0;
             this.targetAlpha = 1.0;
             this.fadeType = "IMMEDIATE";
-            this.setFade("LINEAR", 0.01);
+            this.setAnimationType("LINEAR", 2);
         },
         setOpacity: function(opacity){
             this.targetAlpha = opacity;
@@ -46,7 +47,7 @@ define(['KObject'], function(KObject){
                 this.fadeInterval = interval;
             } else {
                 if(this.fadeType == "EASE")
-                    this.fadeInterval = 6;
+                    this.fadeInterval = 18;
                 else if(this.fadeType == "LINEAR")
                     this.fadeInterval = .05;
             }
@@ -79,8 +80,16 @@ define(['KObject'], function(KObject){
             this.targetPositionX = x;
             this.targetPositionY = y;
         },
-        setAnimationType: function(atype){
+        setAnimationType: function(atype, interval){
             this.animationType = atype;
+            if(interval != undefined){
+                this.animationInterval = interval;
+            } else {
+                if(this.animationType == "EASE")
+                    this.animationInterval = 6;
+                else if(this.animationType == "LINEAR")
+                    this.animationInterval = 5;
+            }
         },
         slots:{
             draw: function(canvas){
@@ -119,14 +128,14 @@ define(['KObject'], function(KObject){
                         this.canvasPositionX = this.targetPositionX;
                     }else if(this.animationType == "LINEAR"){
                         if(this.targetPositionX < this.canvasPositionX)
-                            this.canvasPositionX--;
+                            this.canvasPositionX-=this.animationInterval;
                         else
-                            this.canvasPositionX++;
+                            this.canvasPositionX+=this.animationInterval;
                     }else if (this.animationType == "EASE"){
                         var delta = this.targetPositionX-this.canvasPositionX;
                         if(Math.abs(delta) < 3)
                             this.canvasPositionX = this.targetPositionX;
-                        else this.canvasPositionX += delta/18;
+                        else this.canvasPositionX += delta/this.animationInterval;
                     }
                 }
                 if(yUnequal = this.targetPositionY != this.canvasPositionY){
@@ -134,14 +143,14 @@ define(['KObject'], function(KObject){
                         this.canvasPositionY = this.targetPositionY;
                     }else if(this.animationType == "LINEAR"){
                         if(this.targetPositionY < this.canvasPositionY)
-                            this.canvasPositionY--;
+                            this.canvasPositionY-=this.animationInterval;
                         else
-                            this.canvasPositionY++;
+                            this.canvasPositionY+=this.animationInterval;
                     } else if (this.animationType == "EASE"){
                         var delta = this.targetPositionY-this.canvasPositionY;
                         if(Math.abs(delta) < 3)
                             this.canvasPositionY = this.targetPositionY;
-                        else this.canvasPositionY += delta/18;
+                        else this.canvasPositionY += delta/this.animationInterval;
                     }
                 }
                 yNowEqual = this.targetPositionY == this.canvasPositionY;
