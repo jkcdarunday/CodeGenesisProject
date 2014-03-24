@@ -25,11 +25,35 @@ define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(K
     heximg.setSize(100, 115);
     heximg.setImagePosition(0,0);
     heximg.setCanvasPosition(0,0);
-    heximg.setAnimationType("EASE");
+    var heximg2 = new KImage('hexagon');
+    heximg2.setType('NORMAL');
+    heximg2.setSize(100, 115);
+    heximg2.setImagePosition(0,0);
+    heximg2.setCanvasPosition(0,0);
     KObject.connect(cs, 'update', heximg, 'update');
     KObject.connect(cs, 'draw', heximg, 'draw');
+    KObject.connect(cs, 'update', heximg2, 'update');
+    KObject.connect(cs, 'draw', heximg2, 'draw');
     cc.scene = cs;
     cc.setFrameRate(60);
+    heximg.setOpacity(0.7);
     cc.start();
-    heximg.setTargetPosition(200,200);
+    var Positioner = KObject.extend({
+        init:function(){
+            this.count=0;
+        },
+        slots:{
+            move:function(){
+                if(this.count % 4 == 0) this.kimage.setTargetPosition(400,400);
+                if(this.count % 4 == 1) this.kimage.setTargetPosition(400,100);
+                if(this.count % 4 == 2) this.kimage.setTargetPosition(100,400);
+                if(this.count % 4 == 3) this.kimage.setTargetPosition(100,100);
+                this.count++;
+            }
+        }
+    });
+    var p = new Positioner();
+    p.kimage = heximg;
+    KObject.connect(heximg, "inPosition", p, "move");
+    heximg.setTargetPosition(10,10);
 });
