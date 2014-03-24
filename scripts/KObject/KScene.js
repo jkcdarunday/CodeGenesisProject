@@ -18,7 +18,7 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-define(['KObject'], function(KObject){
+define(['KObject', 'KImage'], function(KObject, KImage){
     return KObject.extend({
         init: function(){
             this.constructor.super.call(this);

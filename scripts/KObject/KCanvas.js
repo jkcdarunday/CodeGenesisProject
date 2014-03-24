@@ -21,17 +21,19 @@
 define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KScene, K){
     var KCanvas = KThread.extend({
         init: function(id){
-            this.constructor.super.call(this, this.update, 1000/30);
+            KThread.call(this, this.update, 1000/30);
+            console.log("Created KCanvas " + id + " with interval " + this.interval);
             this.canvasElement = K(id);
+            console.log(this.canvasElement);
             this.height = this.canvasElement.height;
             this.width = this.canvasElement.width;
             this.canvas = this.canvasElement.getContext("2d");
-            this.constructor.super.call(this);
+//             this.constructor.super.call(this);
             this.fps = 30;
             this.scene = null;
 
         },
-        this.setFrameRate(fps){
+        setFrameRate: function(fps){
             if(fps>1) this.fps = fps;
             this.setInterval(fps);
         },
@@ -47,4 +49,5 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
             }
         }
     });
+    return KCanvas;
 });

@@ -23,6 +23,13 @@ define(['KObject'], function(KObject){
         init: function(imageSet){
             this.constructor.super.call(this);
             this.imageSet = imageSet;
+            this.blockX =
+                this.blockY =
+                this.imagePositionX =
+                this.imagePositionY =
+                this.canvasPositionX =
+                this.canvasPositionY = 0;
+            this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
         },
         setType: function(type){
             this.type = type;
@@ -41,12 +48,12 @@ define(['KObject'], function(KObject){
         setCanvasPosition: function(x,y){
             this.canvasPositionX = x;
             this.canvasPositionY = y;
-        }
+        },
         setSize: function(x,y){
             this.sizeX = x;
             this.sizeY = y;
         },
-        slots{
+        slots:{
             draw: function(canvas){
                 if(this.type == 'BLOCK'){
                     canvas.drawImage(

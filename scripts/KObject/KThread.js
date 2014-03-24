@@ -23,13 +23,13 @@ define(['KObject'], function(KObject){
 
     var KThread = KObject.extend({
         init: function(func, interval){
-            this.constructor.super.call(this);
+            KObject.call(this);
             if(typeof document != 'object')
                 throw Error("Oh my, we can't run threads in nodejs yet.");
             this.run = func;
-            this.interval = interval;
+            this.interval = Math.floor(interval);
             KTHREADS[this.id=KTHREADS.count++] = this;
-            console.log("Created Thread with ID " + this.id);
+            console.log("Created KThread with ID " + this.id + " and interval " + this.interval);
         },
         setInterval: function(i){
             this.interval = i;

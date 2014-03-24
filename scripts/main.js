@@ -17,12 +17,24 @@ var KTHREADS = {
     count:0
 };
 
-define(["KThread", "KBase"],function(KThread, K){
+define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(KObject, KThread, KCanvas, KScene, KImage, K){
     var m = new KThread(function(){
             this.docbody[0].innerHTML += "Test";
         },
         1000
     );
     m.docbody = K("body");
-    m.start();
+//     m.start();
+
+    var cc = new KCanvas('#leCanvas');
+    var cs = new KScene();
+    var heximg = new KImage('hexagon');
+    heximg.setType('NORMAL');
+    heximg.setSize(100, 115);
+    heximg.setImagePosition(0,0);
+    heximg.setCanvasPosition(0,0);
+    KObject.connect(cs, 'update', heximg, 'update');
+    KObject.connect(cs, 'draw', heximg, 'draw');
+    cc.scene = cs;
+    cc.start();
 });
