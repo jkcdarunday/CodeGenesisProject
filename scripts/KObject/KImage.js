@@ -33,9 +33,23 @@ define(['KObject'], function(KObject){
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
             this.animationType = "EASE";
             this.alpha = 1.0;
+            this.targetAlpha = 1.0;
+            this.fadeType = "IMMEDIATE";
+            this.setFade("LINEAR", 0.01);
         },
         setOpacity: function(opacity){
-            this.alpha = opacity;
+            this.targetAlpha = opacity;
+        },
+        setFade: function(fade, interval){
+            this.fadeType = fade;
+            if(interval != undefined){
+                this.fadeInterval = interval;
+            } else {
+                if(this.fadeType == "EASE")
+                    this.fadeInterval = 6;
+                else if(this.fadeType == "LINEAR")
+                    this.fadeInterval = .05;
+            }
         },
         setType: function(type){
             this.type = type;
@@ -133,6 +147,22 @@ define(['KObject'], function(KObject){
                 yNowEqual = this.targetPositionY == this.canvasPositionY;
                 xNowEqual = this.targetPositionX == this.canvasPositionX;
                 if(xUnequal && xNowEqual || yUnequal && yNowEqual) this.emit('inPosition');
+
+                if(this.alpha != this.targetAlpha){
+                    if(this.fadeType == "IMMEDIATE"){
+                        this.alpha = this.targetAlpha;
+                    }else if(this.fadeType == "LINEAR"){
+                        if(this.targetAlpha < this.alpha)
+                            this.alpha -= this.fadeInterval;
+                        else
+                            this.alpha += this.fadeInterval;
+                    } else if (this.fadeType == "EASE"){
+                        var delta = this.targetAlpha-this.alpha;
+                        if(Math.abs(delta) < 3)
+                            this.alpha = this.targetAlpha;
+                        else this.alpha += delta/this.fadeInterval;
+                    }
+                }
             }
         }
     });
