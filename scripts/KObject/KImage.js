@@ -29,7 +29,9 @@ define(['KObject'], function(KObject){
                 this.imagePositionY =
                 this.canvasPositionX =
                 this.canvasPositionY = 0;
-            this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
+            if(KIMAGES[imageSet] != undefined)
+                this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
+            this.animationType = "EASE";
         },
         setType: function(type){
             this.type = type;
@@ -48,10 +50,19 @@ define(['KObject'], function(KObject){
         setCanvasPosition: function(x,y){
             this.canvasPositionX = x;
             this.canvasPositionY = y;
+            this.targetPositionX = x;
+            this.targetPositionY = y;
         },
         setSize: function(x,y){
             this.sizeX = x;
             this.sizeY = y;
+        },
+        setTargetPosition: function(x,y){
+            this.targetPositionX = x;
+            this.targetPositionY = y;
+        },
+        setAnimationType: function(atype){
+            this.animationType = atype;
         },
         slots:{
             draw: function(canvas){
@@ -82,7 +93,30 @@ define(['KObject'], function(KObject){
                 }
             },
             update: function(){
-
+                if(this.targetPositionX != this.canvasPositionX){
+                    if(this.animationType == "LINEAR"){
+                        if(this.targetPositionX < this.canvasPositionX)
+                            this.canvasPositionX--;
+                        else
+                            this.canvasPositionX++;
+                    }else if (this.animationType == "EASE"){
+                        var delta = this.targetPositionX-this.canvasPositionX;
+                        if(delta < 3) this.targetPositionX = this.canvasPositionX;
+                        else this.canvasPositionX += delta/18;
+                    }
+                }
+                if(this.targetPositionY != this.canvasPositionY){
+                    if(this.animationType == "LINEAR"){
+                        if(this.targetPositionY < this.canvasPositionY)
+                            this.canvasPositionY--;
+                        else
+                            this.canvasPositionY++;
+                    } else if (this.animationType == "EASE"){
+                        var delta = this.targetPositionY-this.canvasPositionY;
+                        if(delta < 3) this.targetPositionY = this.canvasPositionY;
+                          else this.canvasPositionY += delta/18;
+                    }
+                }
             }
         }
     });
