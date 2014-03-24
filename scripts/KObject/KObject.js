@@ -25,8 +25,12 @@ define(function(){
     //     this.slots = {};
     }
 
+    KObject.debug = {};
+
     KObject.prototype = {
         "emit":function(signal){
+            if(KObject.debug["emit"])
+                console.log("Emitting signal " + signal);
             var index = undefined;
             for(var i=0;i<this.signals.length;i++)
                 if(this.signals[i].name == signal){
