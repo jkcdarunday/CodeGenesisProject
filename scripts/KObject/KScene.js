@@ -23,6 +23,10 @@ define(['KObject', 'KImage'], function(KObject, KImage){
         init: function(){
             this.constructor.super.call(this);
         },
+        addImage: function(image){
+            KObject.connect(this, 'update', image, 'update');
+            KObject.connect(this, 'draw', image, 'draw');
+        },
         setBackground: function(image){
             this.background = image;
         },
