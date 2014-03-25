@@ -22,6 +22,49 @@ define(['KObject', 'KImage'], function(KObject, KImage){
     return KObject.extend({
         init: function(){
             this.constructor.super.call(this);
+        },
+        setBackground: function(image){
+            this.background = image;
+        },
+        drawCropScale: function(image, canvas){
+            var imageRatio = image.width/image.height;
+            var canvasRatio = canvas.canvas.width/canvas.canvas.height;
+            if(imageRatio > canvasRatio){
+                var canvasCroppedWidth = (canvas.canvas.height*(1/imageRatio));
+                canvas.drawImage(
+                    image,
+                    (image.width-canvasCroppedWidth)/2,
+                    0,
+                    canvasCroppedWidth,
+                    image.height,
+                    0,
+                    0,
+                    canvas.canvas.width,
+                    canvas.canvas.height
+                );
+            } else {
+                var imageCroppedHeight = (image.height*(1/canvasRatio));
+                canvas.drawImage(
+                    image,
+                    0,
+                    (image.height-imageCroppedHeight)/2,
+                    image.width,
+                    imageCroppedHeight,
+                    0,
+                    0,
+                    canvas.canvas.width,
+                    canvas.canvas.height
+                );
+            }
+
+        },
+        drawBackground: function(canvas){
+            if(KIMAGES[this.background]){
+                this.drawCropScale(KIMAGES[this.background], canvas);
+                return true;
+            } else {
+                return false;
+            }
         }
     });
 });
