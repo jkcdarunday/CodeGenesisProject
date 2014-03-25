@@ -6,7 +6,8 @@ require.config({
         "KCanvas": "KObject/KCanvas",
         "KImage": "KObject/KImage",
         "KScene": "KObject/KScene",
-        "KSmoothVariable": "KObject/KSmoothVariable"
+        "KSmoothVariable": "KObject/KSmoothVariable",
+        "KKeyboard": "KObject/KKeyboard"
     }
 });
 
