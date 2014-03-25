@@ -31,6 +31,7 @@ define(['KObject'], function(KObject){
             this.isEqual = true;
             if(parent instanceof KObject)
                 KObject.connect(parent, 'updateVariables', this, 'update');
+            this.pair = null;
         },
         set: function(config){
             if(config["value"]){
@@ -56,18 +57,26 @@ define(['KObject'], function(KObject){
         getValue: function(){
             return this.value;
         },
+        getDelta: function(){
+            return this.targetValue-this.value;
+        }
         slots:{
             update: function(){
                 var previousEqualityState, currentEqualityState;
                 if(previousEqualityState = this.value != this.targetValue){
-                    var gradientDelta = this.targetValue-this.value;
+                    var gradientDelta = this.getDelta();
                     if(this.gradientType == 'IMMEDIATE'){
                         this.value = this.targetValue;
                     }else if(this.gradientType == 'LINEAR'){
-                        if(this.targetValue < this.value)
-                            this.value -= this.gradientInterval;
-                        else
-                            this.value += this.gradientInterval;
+                        if(this.pair){
+                            if(this.targetValue < this.value)
+                                this.value += (this.getDelta()/this.pair.getDelta())*this.gradientInterval;
+                        }else {
+                            if(this.targetValue < this.value)
+                                this.value -= this.gradientInterval;
+                            else
+                                this.value += this.gradientInterval;
+                        }
                     } else if (this.gradientType == 'EASE'){
                         this.value += gradientDelta/this.gradientInterval;
                     }
