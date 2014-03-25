@@ -2,3 +2,12 @@
     display:none;
     visibility:hidden;
 }
+
+body,html{
+    padding:0px;
+    margin:0px;
+}
+
+canvas{
+    position:absolute;
+}

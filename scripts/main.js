@@ -21,34 +21,28 @@ define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(K
     var cc = new KCanvas('#leCanvas', true);
     var cs = new KScene();
     var heximg = new KImage('hexagon');
-    heximg.setType('NORMAL');
-    heximg.setSize(100, 115);
-    heximg.setImagePosition(0,0);
-    heximg.setCanvasPosition(0,0);
     heximg.set({
         type: 'NORMAL',
         size:{x:100,y:115},
         position:{
             image:{x:0,y:0},
         },
-        opacity:0.7,
+        fade:{
+            type:'EASE',
+            interval:2
+        },
+        opacity:0.4,
         animation:{
             type:'EASE',
             interval:8
         }
     });
-    var heximg2 = new KImage('hexagon');
-    heximg2.setType('NORMAL');
-    heximg2.setSize(100, 115);
-    heximg2.setImagePosition(0,0);
-    heximg2.setCanvasPosition(0,0);
     KObject.connect(cs, 'update', heximg, 'update');
     KObject.connect(cs, 'draw', heximg, 'draw');
-    KObject.connect(cs, 'update', heximg2, 'update');
-    KObject.connect(cs, 'draw', heximg2, 'draw');
+    cs.setBackground('fadeBG');
     cc.scene = cs;
-    cc.setFrameRate(60);
     cc.start();
+    cc.windowSet(window);
     var Positioner = KObject.extend({
         init:function(){
             this.count=0;
