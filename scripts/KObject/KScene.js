@@ -21,7 +21,7 @@
 define(['KObject', 'KImage'], function(KObject, KImage){
     return KObject.extend({
         init: function(){
-            this.constructor.super.call(this);
+            KObject.call(this);
         },
         addImage: function(image){
             KObject.connect(this, 'update', image, 'update');
