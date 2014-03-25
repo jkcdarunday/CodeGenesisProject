@@ -21,10 +21,11 @@
 define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
     return KObject.extend({
         init:function(text){
+            KObject.call(this);
             this.canvasPositionX = new KSmoothVariable({value:0}, this);
             this.canvasPositionY = new KSmoothVariable({value:0}, this);
             this.font = "Sans";
-            this.size = "12pt";
+            this.size = 12;
             this.attachment = 'TOPLEFT';
             if(text)
                 this.text = text;
@@ -39,6 +40,10 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                     if(flags.canvas.position['type']){
                         this.canvasPositionX.set({gradient:{type:flags.canvas.position.type}});
                         this.canvasPositionY.set({gradient:{type:flags.canvas.position.type}});
+                    }
+                    if(flags.canvas.position['mirror']){
+                        this.canvasPositionX.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionX});
+                        this.canvasPositionY.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionY});
                     }
                     if(flags.canvas.position['interval']){
                         this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});
@@ -70,12 +75,11 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
         },
         slots:{
             draw:function(canvas){
-                canvas.font = this.size + ' ' + this.font;
+                canvas.font = this.size + 'px ' + this.font;
                 var repositionedX=this.canvasPositionX.getValue(), repositionedY=this.canvasPositionY.getValue();
                 if(this.attachment == 'CENTER'){
                     var measurement = canvas.measureText(this.text);
                     repositionedX -= measurement.width/2;
-                    repositionedY -= measurement.height/2;
                 }
                 canvas.fillText(this.text, repositionedX, repositionedY);
             },
