@@ -42,9 +42,17 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
             this.width = this.canvasElement.width;
             this.canvas = this.canvasElement.getContext("2d");
 //             this.constructor.super.call(this);
-            this.fps = 30;
+            this.setFrameRate(60);
             this.scene = null;
 
+        },
+        windowSet: function(windowE){
+            windowE.mainCanvas = this;
+            windowE.onresize = function(){
+                this.mainCanvas.canvasElement.height = window.innerHeight;
+                this.mainCanvas.canvasElement.width = window.innerWidth;
+            }
+            windowE.onresize();
         },
         setFrameRate: function(fps){
             if(fps>1) this.fps = fps;
@@ -56,7 +64,7 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
         },
         update: function(){
             if(this.monitorFrames) this.frames++;
-            this.clear();
+            if(!this.scene.drawBackground(this.canvas))this.clear();
             if(this.scene != null && this.scene != undefined){
                 this.scene.emit("update");
                 this.scene.emit("draw", this.canvas);
