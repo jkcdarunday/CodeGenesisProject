@@ -52,6 +52,8 @@ define(['KObject'], function(KObject){
                 }
                 if(config.gradient["interval"])
                     this.gradientInterval = config.gradient.interval;
+                if(config.gradient["tolerance"])
+                    this.gradientTolerance = config.gradient.tolerance;
             }
             if(config["pair"])
                 this.pair = config.pair;
@@ -70,8 +72,7 @@ define(['KObject'], function(KObject){
                     if(this.gradientType == 'IMMEDIATE'){
                         this.value = this.targetValue;
                     }else if(this.gradientType == 'LINEAR'){
-                        if(this.pair){
-                            if(this.targetValue < this.value)
+                        if(this.pair && this.getDelta() > 1 && this.pair.getDelta() > 1){
                                 this.value += (this.getDelta()/this.pair.getDelta())*this.gradientInterval;
                         }else {
                             if(this.targetValue < this.value)
