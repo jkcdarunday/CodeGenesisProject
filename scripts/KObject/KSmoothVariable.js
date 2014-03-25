@@ -53,6 +53,8 @@ define(['KObject'], function(KObject){
                 if(config.gradient["interval"])
                     this.gradientInterval = config.gradient.interval;
             }
+            if(config["pair"])
+                this.pair = config.pair;
         },
         getValue: function(){
             return this.value;
