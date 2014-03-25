@@ -31,6 +31,7 @@ define(['KObject'], function(KObject){
                 this.targetPositionY =
                 this.canvasPositionX =
                 this.canvasPositionY = 0;
+            this.attachment = "TOPLEFT";
             if(KIMAGES[imageSet] != undefined)
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
             this.animationType = 'EASE';
@@ -63,6 +64,8 @@ define(['KObject'], function(KObject){
                     this.setImagePosition(flags.position.image.x, flags.position.image.y);
                 if(flags.position['target'])
                     this.setTargetPosition(flags.position.target.x, flags.position.target.y);
+                if(flags.position['attachment'])
+                    this.attachment = flags.position.attachment;
             }
 
             if(flags['animation']){
@@ -135,6 +138,12 @@ define(['KObject'], function(KObject){
         slots:{
             draw: function(canvas){
                 canvas.globalAlpha = this.alpha;
+                var canvasRepositionedX = this.canvasPositionX
+                var canvasRepositionedY = this.canvasPositionY;
+                if(this.attachment == "CENTER"){
+                    canvasRepositionedX -= this.canvasSizeX/2;
+                    canvasRepositionedY -= this.canvasSizeY/2;
+                }
                 if(this.type == 'BLOCK'){
                     canvas.drawImage(
                         KIMAGES[this.imageSet],
@@ -142,8 +151,8 @@ define(['KObject'], function(KObject){
                         this.imagePositionY*this.blockY,
                         this.sizeX,
                         this.sizeY,
-                        this.canvasPositionX,
-                        this.canvasPositionY,
+                        canvasRepositionedX,
+                        canvasRepositionedY,
                         this.canvasSizeX,
                         this.canvasSizeY
                     );
@@ -154,8 +163,8 @@ define(['KObject'], function(KObject){
                         this.imagePositionY,
                         this.sizeX,
                         this.sizeY,
-                        this.canvasPositionX,
-                        this.canvasPositionY,
+                        canvasRepositionedX,
+                        canvasRepositionedY,
                         this.canvasSizeX,
                         this.canvasSizeY
                     );
