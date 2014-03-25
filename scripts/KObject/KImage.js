@@ -20,7 +20,7 @@
 
 define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
     return KObject.extend({
-        init: function(imageSet){
+        init: function(imageSet, config){
             this.constructor.super.call(this);
             this.imageSet = imageSet;
             this.blockX = this.blockY = 0;
@@ -41,6 +41,7 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
             }
             this.attachment = "TOPLEFT";
             this.emit('updateVariables');
+            if(config) this.set(config);
         },
         set: function(flags){
             if(flags["canvas"]){
