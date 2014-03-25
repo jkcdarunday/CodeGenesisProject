@@ -54,6 +54,10 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                         this.canvasPositionX.set({gradient:{type:flags.canvas.position.type}});
                         this.canvasPositionY.set({gradient:{type:flags.canvas.position.type}});
                     }
+                    if(flags.canvas.position['mirror']){
+                        this.canvasPositionX.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionX});
+                        this.canvasPositionY.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionY});
+                    }
                     if(flags.canvas.position['interval']){
                         this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});
                         this.canvasPositionY.set({gradient:{interval:flags.canvas.position.interval}});
