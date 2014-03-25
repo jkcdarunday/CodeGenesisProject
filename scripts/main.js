@@ -11,13 +11,12 @@ require.config({
     }
 });
 
-define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(KObject, KThread, KCanvas, KScene, KImage, K){
+define(["KObject", "KThread", "KCanvas", "KScene", "KKeyboard", "KImage", "KBase"],function(KObject, KThread, KCanvas, KScene, KKeyboard, KImage, K){
 
-    var cc = new KCanvas('#leCanvas', true);
+    var cc = new KCanvas('#leCanvas');
     var cs = new KScene();
 
     var hexRotator = new KThread(function(){
-        this.count++;
         for(var i = -1; i < 2; i++){
             if(this.count%3-1 == i)
                 this.hexes[i].set({opacity:1.0});
@@ -26,10 +25,11 @@ define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(K
         }
     }, 1000);
     hexRotator.hexes = {};
-    hexRotator.count = 0;
+    hexRotator.count = 1000;
     for(var i = -1; i < 2; i++){
         hexRotator.hexes[i] = new KImage('hexagon');
         hexRotator.hexes[i].set({
+            opacity:0.5,
             canvas:{
                 attachment:'CENTER',
                 tolerance:2,
@@ -41,15 +41,28 @@ define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(K
                 }
             },
             fade:{
-                type:'LINEAR',
-                interval:0.01,
+                type:'EASE',
+                interval:32,
                 tolerance:0.01
             }
         });
         cs.addImage(hexRotator.hexes[i]);
     }
-    hexRotator.slots = {start:hexRotator.start};
-    KObject.connect(hexRotator.hexes[1], 'inPosition', hexRotator, 'start');
+    hexRotator.slots = {
+        start:hexRotator.start,
+        move:function(key){
+            console.log(key);
+            if(key==37)
+                this.count--;
+            if(key==39)
+                this.count++;
+            this.run();
+        }
+    };
+    hexRotator.run();
+    var m = new KKeyboard(document.body, true);
+    KObject.connect(m, 'keyDown', hexRotator, 'move');
+    //KObject.connect(hexRotator.hexes[1], 'inPosition', hexRotator, 'start');
 
     cs.setBackground('fadeBG');
     cc.scene = cs;
