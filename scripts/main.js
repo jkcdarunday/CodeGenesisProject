@@ -19,6 +19,7 @@ define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu"],function(KCanvas, K
     cc.scene = new GMenu();
     var kb = new KKeyboard(document.body, false);
     KObject.connect(kb, 'keyDown', cc.scene, 'keyReactor');
+    KObject.connect(cc, 'windowResized', cc.scene, 'windowResized');
     cc.start();
     cc.windowSet(window);
 });
