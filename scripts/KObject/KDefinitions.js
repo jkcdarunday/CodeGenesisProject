@@ -5,3 +5,7 @@ var KIMAGES = {
 var KTHREADS = {
     count:0
 };
+
+var KKEYBOARDS = {
+    count:0
+}
