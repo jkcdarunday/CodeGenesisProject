@@ -33,6 +33,8 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
             this.canvasSizeY = new KSmoothVariable({value:0}, this);
             this.imageSizeX = new KSmoothVariable({value:0}, this);
             this.imageSizeY = new KSmoothVariable({value:0}, this);
+            this.mirrorOffsetX = 0;
+            this.mirrorOffsetY = 0;
             this.canvasPositionX.set({pair:this.canvasPositionY});
             this.canvasPositionY.set({pair:this.canvasPositionX});
             this.alpha = new KSmoothVariable({actualValue:1.0,value:1.0,gradient:{type:'EASE'}}, this);
@@ -57,6 +59,12 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                     if(flags.canvas.position['mirror']){
                         this.canvasPositionX.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionX});
                         this.canvasPositionY.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionY});
+                    }
+                    if(flags.canvas.position['mirrorOffset']){
+                        if(flags.canvas.position.mirrorOffset['x'])
+                            this.canvasPositionX.set({mirrorOffset:flags.canvas.position.mirrorOffset['x']});
+                        if(flags.canvas.position.mirrorOffset['y'])
+                            this.canvasPositionY.set({mirrorOffset:flags.canvas.position.mirrorOffset['y']});
                     }
                     if(flags.canvas.position['interval']){
                         this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});

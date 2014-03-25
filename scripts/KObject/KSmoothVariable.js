@@ -28,6 +28,7 @@ define(['KObject'], function(KObject){
             this.gradientInterval = 0;
             this.gradientTolerance = 0.01;
             this.set(settings);
+            this.mirrorOffset = 0;
             this.isEqual = true;
             if(parent instanceof KObject)
                 KObject.connect(parent, 'updateVariables', this, 'update');
@@ -59,6 +60,9 @@ define(['KObject'], function(KObject){
                 this.pair = config.pair;
             if(config["mirror"])
                 this.mirrorVariable = config.mirror;
+            if(config['mirrorOffset']){
+                    this.mirrorOffset = config.mirrorOffset;
+            }
         },
         getValue: function(){
             return this.value;
