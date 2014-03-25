@@ -21,7 +21,7 @@
 define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage, KText){
     return KScene.extend({
         init: function(){
-            this.constructor.super.call(this);
+            KScene.call(this);
             this.setBackground('fadeBG');
             this.count = 1000;
             this.imageConfig = {
@@ -92,6 +92,9 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
             }
         },
         slots:{
+            windowResized: function(){
+                this.updateChoicesPositioning();
+            },
             keyReactor: function(key){
                 if(key==37) this.count--;
                 if(key==39) this.count++;
