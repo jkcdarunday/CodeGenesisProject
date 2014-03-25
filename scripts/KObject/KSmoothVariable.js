@@ -59,7 +59,7 @@ define(['KObject'], function(KObject){
         },
         getDelta: function(){
             return this.targetValue-this.value;
-        }
+        },
         slots:{
             update: function(){
                 var previousEqualityState, currentEqualityState;
