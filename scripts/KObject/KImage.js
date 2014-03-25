@@ -45,9 +45,9 @@ define(['KObject'], function(KObject){
 
             if(flags['fade']){
                 if(flags.fade['type'])
-                    this.fadeType = flags.fade.type;
-                if(flags.fade['interval'])
-                    this.fadeInterval = flags.fade.interval;
+                    this.setFade(flags.fade.type);
+                if(flags.fade['interval'] && flags.fade['type'])
+                    this.setFade(flags.fade.type, flags.fade.interval);
             }
 
             if(flags['opacity'])
@@ -219,7 +219,7 @@ define(['KObject'], function(KObject){
                     } else if (this.fadeType == 'EASE'){
                         this.alpha += fadeDelta/this.fadeInterval;
                     }
-                    if(Math.abs(fadeDelta) < this.fadeInterval)
+                    if(Math.abs(fadeDelta) < .01)
                         this.alpha = this.targetAlpha;
                 }
             }
