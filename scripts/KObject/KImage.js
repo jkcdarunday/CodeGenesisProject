@@ -33,6 +33,8 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
             this.canvasSizeY = new KSmoothVariable({value:0}, this);
             this.imageSizeX = new KSmoothVariable({value:0}, this);
             this.imageSizeY = new KSmoothVariable({value:0}, this);
+            this.canvasPositionX.set({pair:this.canvasPositionY});
+            this.canvasPositionY.set({pair:this.canvasPositionX});
             this.alpha = new KSmoothVariable({actualValue:1.0,value:1.0,gradient:{type:'EASE'}}, this);
             if(KIMAGES[imageSet] != undefined){
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
@@ -55,6 +57,10 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                         this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});
                         this.canvasPositionY.set({gradient:{interval:flags.canvas.position.interval}});
                     }
+                }
+                if(flags.canvas["tolerance"]){
+                    this.canvasPositionY.set({gradient:{tolerance:flags.canvas.tolerance}});
+                    this.canvasPositionX.set({gradient:{tolerance:flags.canvas.tolerance}});
                 }
                 if(flags.canvas["attachment"])
                     this.attachment = flags.canvas.attachment;
@@ -91,7 +97,10 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                 this.alpha.set({value:flags.opacity});
             }
             if(flags["fade"]){
-                    this.alpha.set({gradient:{type:flags.fade['type'],interval:flags.fade['interval']}});
+                if(flags.fade["tolerance"]){
+                    this.alpha.set({gradient:{tolerance:flags.fade.tolerance}});
+                }
+                this.alpha.set({gradient:{type:flags.fade['type'],interval:flags.fade['interval']}});
             }
         },
         setCanvasSize: function(x,y){
@@ -149,7 +158,6 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                 this.emit('updateVariables');
                 var isEqual = this.canvasPositionX.isEqual && this.canvasPositionY.isEqual;
                 if(isUnequal && isEqual) this.emit('inPosition');
-
             }
         }
     });
