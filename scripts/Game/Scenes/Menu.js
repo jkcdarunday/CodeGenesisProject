@@ -50,7 +50,7 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
             this.labelText[1] = 'Topology';
             for(var i=-1; i<=1; i++){
                 this.choices[i] = new KImage('hexagon', this.imageConfig);
-                this.labels[i] = new KText(this.labelText[i]);
+                this.labels[i] = new KImage('menu' + this.labelText[i]);
                 this.labels[i].set({
                     canvas:{
                         attachment:'CENTER',
