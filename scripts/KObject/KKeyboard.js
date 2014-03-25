@@ -21,29 +21,33 @@
 define(['KObject', 'KBase'], function(KObject, K){
     return KObject.extend({
         init:function(id, grab){
-            this.element = K(id);
+            this.constructor.super.call(this);
+            if(typeof id == 'object')
+                this.element = id;
+            else
+                this.element = K(id);
             this.keys = {};
             KKEYBOARDS[this.id=KKEYBOARDS.count++] = this;
             if(grab)
                 this.grab = true;
             else
                 this.grab = false;
-            this.element.assignedKKeyboard = this.id;
+            this.element.assignedKKeyboard = this;
             this.element.onkeypress = this.keyPress;
             this.element.onkeyup = this.keyUp;
             this.element.onkeydown = this.keyDown;
         },
         keyPress: function(e){
-            this.assignedKKeyboard.emit("keyPress", e.switch);
+            this.assignedKKeyboard.emit("keyPress", e.which);
         },
         keyDown: function(e){
-            var key = e.switch;
+            var key = e.which;
             this.assignedKKeyboard.keys[key] = true;
             this.assignedKKeyboard.emit("keyDown", key);
             if(this.assignedKKeyboard.grab) return false;
         },
         keyUp: function(e){
-            var key = e.switch;
+            var key = e.which;
             this.assignedKKeyboard.keys[key] = false;
             this.assignedKKeyboard.emit("keyPress", key);
             if(this.assignedKKeyboard.grab) return false;
