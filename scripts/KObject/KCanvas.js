@@ -51,6 +51,7 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
             windowE.onresize = function(){
                 this.mainCanvas.canvasElement.height = window.innerHeight;
                 this.mainCanvas.canvasElement.width = window.innerWidth;
+                this.mainCanvas.emit("windowResized");
             }
             windowE.onresize();
         },
