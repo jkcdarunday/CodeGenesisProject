@@ -18,210 +18,138 @@
  *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
  */
 
-define(['KObject'], function(KObject){
+define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
     return KObject.extend({
         init: function(imageSet){
             this.constructor.super.call(this);
             this.imageSet = imageSet;
-            this.blockX =
-                this.blockY =
-                this.imagePositionX =
-                this.imagePositionY =
-                this.targetPositionX =
-                this.targetPositionY =
-                this.canvasPositionX =
-                this.canvasPositionY = 0;
-            this.attachment = "TOPLEFT";
-            if(KIMAGES[imageSet] != undefined)
+            this.blockX = this.blockY = 0;
+            this.type = 'NORMAL';
+            this.imagePositionX = new KSmoothVariable({value:0}, this);
+            this.imagePositionY = new KSmoothVariable({value:0}, this);
+            this.canvasPositionX = new KSmoothVariable({value:0}, this);
+            this.canvasPositionY = new KSmoothVariable({value:0}, this);
+            this.canvasSizeX = new KSmoothVariable({value:0}, this);
+            this.canvasSizeY = new KSmoothVariable({value:0}, this);
+            this.imageSizeX = new KSmoothVariable({value:0}, this);
+            this.imageSizeY = new KSmoothVariable({value:0}, this);
+            this.alpha = new KSmoothVariable({actualValue:1.0,value:1.0,gradient:{type:'EASE'}}, this);
+            if(KIMAGES[imageSet] != undefined){
                 this.setSize(KIMAGES[imageSet].width,KIMAGES[imageSet].height);
-            this.animationType = 'EASE';
-            this.animationInterval = 18;
-            this.alpha = 1.0;
-            this.targetAlpha = 1.0;
+            }
+            this.attachment = "TOPLEFT";
+            this.emit('updateVariables');
         },
         set: function(flags){
-            if(flags['size'])
-                this.setSize(flags.size.x, flags.size.y);
-
-            if(flags['fade']){
-                if(flags.fade['type'])
-                    this.setFade(flags.fade.type);
-                if(flags.fade['interval'] && flags.fade['type'])
-                    this.setFade(flags.fade.type, flags.fade.interval);
+            if(flags["canvas"]){
+                if(flags.canvas["position"]){
+                    if(flags.canvas.position['x'])
+                        this.canvasPositionX.set({value:flags.canvas.position.x});
+                    if(flags.canvas.position['y'])
+                        this.canvasPositionY.set({value:flags.canvas.position.y});
+                    if(flags.canvas.position['type']){
+                        this.canvasPositionX.set({gradient:{type:flags.canvas.position.type}});
+                        this.canvasPositionY.set({gradient:{type:flags.canvas.position.type}});
+                    }
+                    if(flags.canvas.position['interval']){
+                        this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});
+                        this.canvasPositionY.set({gradient:{interval:flags.canvas.position.interval}});
+                    }
+                }
+                if(flags.canvas["attachment"])
+                    this.attachment = flags.canvas.attachment;
+                if(flags.canvas["size"]){
+                    if(flags.canvas.size['x'])
+                        this.canvasSizeX.set({value:flags.canvas.size.x});
+                    if(flags.canvas.size['y'])
+                        this.canvasSizeY.set({value:flags.canvas.size.y});
+                }
             }
-
-            if(flags['opacity'])
-                this.setOpacity(flags.opacity);
-
-            if(flags['type'])
-                this.setType(flags.type);
-
-            if(flags['blockSize'])
-                this.setBlockSize(flags.blockSize);
-
-            if(flags['position']){
-                if(flags.position['image'])
-                    this.setImagePosition(flags.position.image.x, flags.position.image.y);
-                if(flags.position['target'])
-                    this.setTargetPosition(flags.position.target.x, flags.position.target.y);
-                if(flags.position['attachment'])
-                    this.attachment = flags.position.attachment;
+            if(flags["image"]){
+                if(flags.image["position"]){
+                    if(flags.image.position['x'])
+                        this.imagePositionX.set({value:flags.image.position.x});
+                    if(flags.image.position['y'])
+                        this.imagePositionY.set({value:flags.image.position.y});
+                    if(flags.image.position['type']){
+                        this.imagePositionX.set({gradient:{type:flags.image.position.type}});
+                        this.imagePositionY.set({gradient:{type:flags.image.position.type}});
+                    }
+                    if(flags.image.position['interval']){
+                        this.imagePositionX.set({gradient:{interval:flags.image.position.interval}});
+                        this.imagePositionY.set({gradient:{interval:flags.image.position.interval}});
+                    }
+                }
+                if(flags.image["size"]){
+                    if(flags.image.size['x'])
+                        this.imageSizeX.set({value:flags.image.size.x});
+                    if(flags.image.size['y'])
+                        this.imageSizeY.set({value:flags.image.size.y});
+                }
             }
-
-            if(flags['animation']){
-                if(flags.animation['type'])
-                    this.animationType = flags.animation.type;
-                if(flags.animation['interval'])
-                    this.animationInterval = flags.animation.interval;
+            if(flags["opacity"]){
+                this.alpha.set({value:flags.opacity});
             }
-
-        },
-        setOpacity: function(opacity){
-            this.targetAlpha = opacity;
-        },
-        setFade: function(fade, interval){
-            this.fadeType = fade;
-            if(interval != undefined){
-                this.fadeInterval = interval;
-            } else {
-                if(this.fadeType == 'EASE')
-                    this.fadeInterval = 18;
-                else if(this.fadeType == 'LINEAR')
-                    this.fadeInterval = .05;
+            if(flags["fade"]){
+                    this.alpha.set({gradient:{type:flags.fade['type'],interval:flags.fade['interval']}});
             }
-        },
-        setType: function(type){
-            this.type = type;
-        },
-        setBlockSize: function(x, y){
-            this.blockX = x;
-            if(y != undefined && y!=null) this.blockY = y;
-            else this.blockY = x;
-            this.sizeX = this.blockX;
-            this.sizeY = this.blockY;
-        },
-        setImagePosition: function(x,y){
-            this.imagePositionX = x;
-            this.imagePositionY = y;
-        },
-        setCanvasPosition: function(x,y){
-            this.canvasPositionX = x;
-            this.canvasPositionY = y;
-            this.targetPositionX = x;
-            this.targetPositionY = y;
-        },
-        setSize: function(x,y){
-            this.sizeX = x;
-            this.sizeY = y;
-            this.canvasSizeX = x;
-            this.canvasSizeY = y;
         },
         setCanvasSize: function(x,y){
-            this.canvasSizeX = x;
-            this.canvasSizeY = y;
+            this.canvasSizeX.set({value:x});
+            this.canvasSizeY.set({value:y});
         },
-        setTargetPosition: function(x,y){
-            this.targetPositionX = x;
-            this.targetPositionY = y;
+        setImageSize: function(x,y){
+            this.imageSizeX.set({value:x});
+            this.imageSizeY.set({value:y});
         },
-        setAnimationType: function(atype, interval){
-            this.animationType = atype;
-            if(interval != undefined){
-                this.animationInterval = interval;
-            } else {
-                if(this.animationType == 'EASE')
-                    this.animationInterval = 6;
-                else if(this.animationType == 'LINEAR')
-                    this.animationInterval = 5;
-            }
+        setSize: function(x,y){
+            this.setCanvasSize(x,y);
+            this.setImageSize(x,y);
         },
         slots:{
             draw: function(canvas){
-                canvas.globalAlpha = this.alpha;
-                var canvasRepositionedX = this.canvasPositionX
-                var canvasRepositionedY = this.canvasPositionY;
+                canvas.globalAlpha = this.alpha.getValue();
+                var canvasRepositionedX = this.canvasPositionX.getValue();
+                var canvasRepositionedY = this.canvasPositionY.getValue();
                 if(this.attachment == "CENTER"){
-                    canvasRepositionedX -= this.canvasSizeX/2;
-                    canvasRepositionedY -= this.canvasSizeY/2;
+                    canvasRepositionedX -= this.canvasSizeX.getValue()/2;
+                    canvasRepositionedY -= this.canvasSizeY.getValue()/2;
                 }
                 if(this.type == 'BLOCK'){
                     canvas.drawImage(
                         KIMAGES[this.imageSet],
-                        this.imagePositionX*this.blockX,
-                        this.imagePositionY*this.blockY,
-                        this.sizeX,
-                        this.sizeY,
+                        this.imagePositionX.getValue()*this.blockX,
+                        this.imagePositionY.getValue()*this.blockY,
+                        this.imageSizeX.getValue(),
+                        this.imageSizeY.getValue(),
                         canvasRepositionedX,
                         canvasRepositionedY,
-                        this.canvasSizeX,
-                        this.canvasSizeY
+                        this.canvasSizeX.getValue(),
+                        this.canvasSizeY.getValue()
                     );
                 } else if(this.type == 'NORMAL'){
+//                     console.log(this.canvasSizeX.getValue());
+//                     console.log(this.canvasSizeY.getValue());
                     canvas.drawImage(
                         KIMAGES[this.imageSet],
-                        this.imagePositionX,
-                        this.imagePositionY,
-                        this.sizeX,
-                        this.sizeY,
+                        this.imagePositionX.getValue(),
+                        this.imagePositionY.getValue(),
+                        this.imageSizeX.getValue(),
+                        this.imageSizeY.getValue(),
                         canvasRepositionedX,
                         canvasRepositionedY,
-                        this.canvasSizeX,
-                        this.canvasSizeY
+                        this.canvasSizeX.getValue(),
+                        this.canvasSizeY.getValue()
                     );
                 }
                 canvas.globalAlpha = 1.0;
             },
             update: function(){
-                var xUnequal = false, yUnequal = false, yNowEqual = false, xNowEqual = false;
-                if(xUnequal = this.targetPositionX != this.canvasPositionX){
-                    var deltaX = this.targetPositionX-this.canvasPositionX;
-                    if(this.animationType == 'IMMEDIATE'){
-                        this.canvasPositionX = this.targetPositionX;
-                    }else if(this.animationType == 'LINEAR'){
-                        if(this.targetPositionX < this.canvasPositionX)
-                            this.canvasPositionX-=this.animationInterval;
-                        else
-                            this.canvasPositionX+=this.animationInterval;
-                    }else if (this.animationType == 'EASE'){
-                        this.canvasPositionX += deltaX/this.animationInterval;
-                    }
-                    if(Math.abs(deltaX) < this.animationInterval)
-                        this.canvasPositionX = this.targetPositionX;
-                }
-                if(yUnequal = this.targetPositionY != this.canvasPositionY){
-                    var deltaY = this.targetPositionY-this.canvasPositionY;
-                    if(this.animationType == 'IMMEDIATE'){
-                        this.canvasPositionY = this.targetPositionY;
-                    }else if(this.animationType == 'LINEAR'){
-                        if(this.targetPositionY < this.canvasPositionY)
-                            this.canvasPositionY-=this.animationInterval;
-                        else
-                            this.canvasPositionY+=this.animationInterval;
-                    } else if (this.animationType == 'EASE'){
-                        this.canvasPositionY += deltaY/this.animationInterval;
-                    }
-                    if(Math.abs(deltaY) < this.animationInterval)
-                        this.canvasPositionY = this.targetPositionY;
-                }
-                yNowEqual = this.targetPositionY == this.canvasPositionY;
-                xNowEqual = this.targetPositionX == this.canvasPositionX;
-                if(xUnequal && xNowEqual || yUnequal && yNowEqual) this.emit('inPosition');
+                var isUnequal = !this.canvasPositionX.isEqual || !this.canvasPositionY.isEqual;
+                this.emit('updateVariables');
+                var isEqual = this.canvasPositionX.isEqual && this.canvasPositionY.isEqual;
+                if(isUnequal && isEqual) this.emit('inPosition');
 
-                if(this.alpha != this.targetAlpha){
-                    var fadeDelta = this.targetAlpha-this.alpha;
-                    if(this.fadeType == 'IMMEDIATE'){
-                        this.alpha = this.targetAlpha;
-                    }else if(this.fadeType == 'LINEAR'){
-                        if(this.targetAlpha < this.alpha)
-                            this.alpha -= this.fadeInterval;
-                        else
-                            this.alpha += this.fadeInterval;
-                    } else if (this.fadeType == 'EASE'){
-                        this.alpha += fadeDelta/this.fadeInterval;
-                    }
-                    if(Math.abs(fadeDelta) < .01)
-                        this.alpha = this.targetAlpha;
-                }
             }
         }
     });
