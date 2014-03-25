@@ -31,21 +31,24 @@ define(["KObject", "KThread", "KCanvas", "KScene", "KImage", "KBase"],function(K
         hexRotator.hexes[i].set({
             canvas:{
                 attachment:'CENTER',
+                tolerance:2,
                 position:{
-                    type:'LINEAR',
-                    interval:4,
+                    type:'EASE',
+                    interval:10,
                     x:window.innerWidth/2+i*120,
                     y:window.innerHeight/2
                 }
             },
             fade:{
-                type:'EASE',
-                interval:32
+                type:'LINEAR',
+                interval:0.01,
+                tolerance:0.01
             }
         });
         cs.addImage(hexRotator.hexes[i]);
     }
-    hexRotator.start();
+    hexRotator.slots = {start:hexRotator.start};
+    KObject.connect(hexRotator.hexes[1], 'inPosition', hexRotator, 'start');
 
     cs.setBackground('fadeBG');
     cc.scene = cs;
