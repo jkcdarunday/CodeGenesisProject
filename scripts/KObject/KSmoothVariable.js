@@ -57,6 +57,8 @@ define(['KObject'], function(KObject){
             }
             if(config["pair"])
                 this.pair = config.pair;
+            if(config["mirror"])
+                this.mirrorVariable = config.mirror;
         },
         getValue: function(){
             return this.value;
@@ -67,7 +69,7 @@ define(['KObject'], function(KObject){
         slots:{
             update: function(){
                 var previousEqualityState, currentEqualityState;
-                
+
                 if(this.gradientType == 'MIRROR')
                     if(this.mirrorVariable)
                         this.value = this.targetValue = this.mirrorVariable.getValue();
