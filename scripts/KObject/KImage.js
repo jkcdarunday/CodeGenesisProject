@@ -27,6 +27,8 @@ define(['KObject'], function(KObject){
                 this.blockY =
                 this.imagePositionX =
                 this.imagePositionY =
+                this.targetPositionX =
+                this.targetPositionY =
                 this.canvasPositionX =
                 this.canvasPositionY = 0;
             if(KIMAGES[imageSet] != undefined)
@@ -108,6 +110,12 @@ define(['KObject'], function(KObject){
         setSize: function(x,y){
             this.sizeX = x;
             this.sizeY = y;
+            this.canvasSizeX = x;
+            this.canvasSizeY = y;
+        },
+        setCanvasSize: function(x,y){
+            this.canvasSizeX = x;
+            this.canvasSizeY = y;
         },
         setTargetPosition: function(x,y){
             this.targetPositionX = x;
@@ -136,8 +144,8 @@ define(['KObject'], function(KObject){
                         this.sizeY,
                         this.canvasPositionX,
                         this.canvasPositionY,
-                        this.sizeX,
-                        this.sizeY
+                        this.canvasSizeX,
+                        this.canvasSizeY
                     );
                 } else if(this.type == 'NORMAL'){
                     canvas.drawImage(
@@ -148,8 +156,8 @@ define(['KObject'], function(KObject){
                         this.sizeY,
                         this.canvasPositionX,
                         this.canvasPositionY,
-                        this.sizeX,
-                        this.sizeY
+                        this.canvasSizeX,
+                        this.canvasSizeY
                     );
                 }
                 canvas.globalAlpha = 1.0;
