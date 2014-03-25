@@ -67,6 +67,11 @@ define(['KObject'], function(KObject){
         slots:{
             update: function(){
                 var previousEqualityState, currentEqualityState;
+                
+                if(this.gradientType == 'MIRROR')
+                    if(this.mirrorVariable)
+                        this.value = this.targetValue = this.mirrorVariable.getValue();
+
                 if(previousEqualityState = this.value != this.targetValue){
                     var gradientDelta = this.getDelta();
                     if(this.gradientType == 'IMMEDIATE'){
