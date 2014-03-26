@@ -19,7 +19,7 @@
  */
 
 define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage, KText){
-/*
+
     var GNetwork = KObject.extend({
         init:function(xOffset){
             KObject.call(this);
@@ -96,42 +96,45 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
             windowResized: function(){
             },
             keyReactor: function(key){
+                if(key == 27){
+                    this.emit("changeScene", "menu");
+                }
             }
         }
 
-    });*/
-    return KScene.extend({
-        init: function(){
-            KScene.call(this);
-            this.setBackground('fadeBG');
-            this.textViewer = new KText('Evil');
-            this.textViewer.set({
-                canvas:{
-                    attachment:'CENTER',
-                    position:{
-                        y:window.innerHeight/2,
-                        x:window.innerWidth/2
-                    }
-                }
-            });
-            this.addImage(this.textViewer);
-        },
-        slots:{
-            windowResized: function(){
-                this.textViewer.set({
-                    canvas:{
-                        position:{
-                            y:window.innerHeight/2,
-                            x:window.innerWidth/2
-                        }
-                    }
-                });
-            },
-            keyReactor: function(key){
-//                 if(key>'A' && key<'Z'){
-                    this.textViewer.text += String.fromCharCode(key);
-//                 }
-            }
-        }
     });
+//     return KScene.extend({
+//         init: function(){
+//             KScene.call(this);
+//             this.setBackground('fadeBG');
+//             this.textViewer = new KText('Evil');
+//             this.textViewer.set({
+//                 canvas:{
+//                     attachment:'CENTER',
+//                     position:{
+//                         y:window.innerHeight/2,
+//                         x:window.innerWidth/2
+//                     }
+//                 }
+//             });
+//             this.addImage(this.textViewer);
+//         },
+//         slots:{
+//             windowResized: function(){
+//                 this.textViewer.set({
+//                     canvas:{
+//                         position:{
+//                             y:window.innerHeight/2,
+//                             x:window.innerWidth/2
+//                         }
+//                     }
+//                 });
+//             },
+//             keyReactor: function(key){
+// //                 if(key>'A' && key<'Z'){
+//                     this.textViewer.text += String.fromCharCode(key);
+// //                 }
+//             }
+//         }
+//     });
 });

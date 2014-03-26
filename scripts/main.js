@@ -23,6 +23,7 @@ define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle"],function
     cc.scenes["battle"] = new GBattle();
     cc.scene = cc.scenes["menu"];
     KObject.connect(cc.scenes["menu"], "changeScene", cc, "changeScene");
+    KObject.connect(cc.scenes["battle"], "changeScene", cc, "changeScene");
 
     var kb = new KKeyboard(document.body, false);
     KObject.connect(kb, 'keyDown', cc.scenes['menu'], 'keyReactor');
