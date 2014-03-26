@@ -19,7 +19,7 @@
  */
 
 define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage, KText){
-
+/*
     var GNetwork = KObject.extend({
         init:function(xOffset){
             KObject.call(this);
@@ -99,5 +99,37 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
             }
         }
 
+    });*/
+    return KScene.extend({
+        init: function(){
+            KScene.call(this);
+            this.setBackground('fadeBG');
+            this.textViewer = new KText('Evil');
+            this.textViewer.set({
+                canvas:{
+                    attachment:'CENTER',
+                    position:{
+                        y:window.innerHeight/2,
+                        x:window.innerWidth/2
+                    }
+                }
+            });
+            this.textViewer.text="Bacon ipsum dolor sit amet tail venison chuck drumstick capicola pig shankle, doner ball tip turducken fatback tri-tip short ribs biltong pork loin. Tail jerky pork loin pork belly ground round ball tip. Pork loin porchetta swine doner, shank boudin\n ribeye fatback. Tail chicken bacon pork belly, turkey boudin bresaola salami beef ribs filet mignon. Brisket pastrami capicola prosciutto leberkas chuck jowl turkey jerky boudin pork loin short loin spare ribs venison shank. Swine\n chuck t-bone, pork chop capicola chicken landjaeger pig ribeye. Bresaola hamburger chicken, tongue meatball shoulder sirloin bacon tri-tip.";
+            this.addImage(this.textViewer);
+        },
+        slots:{
+            windowResized: function(){
+                this.textViewer.set({
+                    canvas:{
+                        position:{
+                            y:window.innerHeight/2,
+                            x:window.innerWidth/2
+                        }
+                    }
+                });
+            },
+            keyReactor: function(key){
+            }
+        }
     });
 });

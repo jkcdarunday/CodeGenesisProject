@@ -81,15 +81,35 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                 }
             }
         },
+        wrapText:function(context, text, x, y, maxWidth, lineHeight) {
+            var words = text.split(' ');
+            var line = '';
+
+            for(var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = context.measureText(testLine);
+                var testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        },
         slots:{
             draw:function(canvas){
                 canvas.font = this.size + 'px ' + this.font;
                 var repositionedX=this.canvasPositionX.getValue(), repositionedY=this.canvasPositionY.getValue();
                 if(this.attachment == 'CENTER'){
                     var measurement = canvas.measureText(this.text);
-                    repositionedX -= measurement.width/2;
+                    repositionedX -= 400;
                 }
-                canvas.fillText(this.text, repositionedX, repositionedY);
+                this.wrapText(canvas, this.text, repositionedX, repositionedY, 800, this.size*1.2);
+//                 canvas.fillText(this.text, repositionedX, repositionedY);
             },
             update:function(){
                 this.emit('updateVariables');
