@@ -28,9 +28,9 @@ define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle", "KAjax"]
             alert(d);
         }
     };
-#    KObject.connect(x, 'finished', alerter, 'print');
+//    KObject.connect(x, 'finished', alerter, 'print');
 
-#    x.requestGet('desu');
+//    x.requestGet('desu');
 
     cc.scenes["menu"] = new GMenu();
     cc.scenes["battle"] = new GBattle();
