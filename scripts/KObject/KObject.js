@@ -83,6 +83,8 @@ define(function(){
     }
 
     KObject.connect = function(source, signal, target, slot){
+        if(KObject.debug["connect"])
+            console.log("Connecting signal " + signal + " of " + source + " to slot " + slot + " of " + target);
         source.signals.push({"name":signal, "object":target, "slot":slot});
     }
 

@@ -21,6 +21,7 @@
 define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KScene, K){
     var KCanvas = KThread.extend({
         init: function(id, hasFrameMonitor){
+            KObject.call(this);
             KThread.call(this, this.update, 1000/30);
 
             if(hasFrameMonitor != undefined && hasFrameMonitor){
@@ -69,6 +70,11 @@ define(['KThread', 'KObject', 'KScene', 'KBase'], function(KThread, KObject, KSc
             if(this.scene != null && this.scene != undefined){
                 this.scene.emit("update");
                 this.scene.emit("draw", this.canvas);
+            }
+        },
+        slots:{
+            changeScene:function(ns){
+                this.scene = this.scenes[ns];
             }
         }
     });

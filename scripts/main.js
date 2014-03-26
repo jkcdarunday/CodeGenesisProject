@@ -10,13 +10,20 @@ require.config({
         "KKeyboard": "KObject/KKeyboard",
         "KText": "KObject/KText",
 
-        "GMenu": "Game/Scenes/Menu"
+        "GMenu": "Game/Scenes/Menu",
+        "GBattle": "Game/Scenes/Battle"
     }
 });
 
-define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu"],function(KCanvas, KScene, KObject, KKeyboard, GMenu){
+define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle"],function(KCanvas, KScene, KObject, KKeyboard, GMenu, GBattle){
     var cc = new KCanvas('#leCanvas');
-    cc.scene = new GMenu();
+//     KObject.debug['connect'] = true;
+    cc.scenes = {};
+    cc.scenes["menu"] = new GMenu();
+    cc.scenes["battle"] = new GBattle();
+    cc.scene = cc.scenes["menu"];
+    KObject.connect(cc.scenes["menu"], "changeScene", cc, "changeScene");
+
     var kb = new KKeyboard(document.body, false);
     KObject.connect(kb, 'keyDown', cc.scene, 'keyReactor');
     KObject.connect(cc, 'windowResized', cc.scene, 'windowResized');

@@ -24,6 +24,8 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
             KObject.call(this);
             this.canvasPositionX = new KSmoothVariable({value:0}, this);
             this.canvasPositionY = new KSmoothVariable({value:0}, this);
+            this.mirrorOffsetX = 0;
+            this.mirrorOffsetY = 0;
             this.font = "Sans";
             this.size = 12;
             this.attachment = 'TOPLEFT';
@@ -44,6 +46,12 @@ define(['KObject', 'KSmoothVariable'], function(KObject, KSmoothVariable){
                     if(flags.canvas.position['mirror']){
                         this.canvasPositionX.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionX});
                         this.canvasPositionY.set({gradient:{type:'MIRROR'},mirror:flags.canvas.position.mirror.canvasPositionY});
+                    }
+                    if(flags.canvas.position['mirrorOffset']){
+                        if(flags.canvas.position.mirrorOffset['x'])
+                            this.canvasPositionX.set({mirrorOffset:flags.canvas.position.mirrorOffset['x']});
+                        if(flags.canvas.position.mirrorOffset['y'])
+                            this.canvasPositionY.set({mirrorOffset:flags.canvas.position.mirrorOffset['y']});
                     }
                     if(flags.canvas.position['interval']){
                         this.canvasPositionX.set({gradient:{interval:flags.canvas.position.interval}});

@@ -76,7 +76,7 @@ define(['KObject'], function(KObject){
 
                 if(this.gradientType == 'MIRROR')
                     if(this.mirrorVariable)
-                        this.value = this.targetValue = this.mirrorVariable.getValue();
+                        this.value = this.targetValue = this.mirrorVariable.getValue() + this.mirrorOffset;
 
                 if(previousEqualityState = this.value != this.targetValue){
                     var gradientDelta = this.getDelta();

@@ -21,6 +21,7 @@
 define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage, KText){
     return KScene.extend({
         init: function(){
+            KObject.call(this);
             KScene.call(this);
             this.setBackground('fadeBG');
             this.count = 1000;
@@ -98,6 +99,10 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
             keyReactor: function(key){
                 if(key==37) this.count--;
                 if(key==39) this.count++;
+                if(key==13){
+                    console.log("LELEELELELEL");
+                    if(this.getChoice()==1) this.emit('changeScene', "battle");
+                }
                 this.updateChoice();
             }
         }
