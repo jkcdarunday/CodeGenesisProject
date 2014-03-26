@@ -9,16 +9,18 @@ require.config({
         "KSmoothVariable": "KObject/KSmoothVariable",
         "KKeyboard": "KObject/KKeyboard",
         "KText": "KObject/KText",
+        "KAjax": "KObject/KAjax",
 
         "GMenu": "Game/Scenes/Menu",
         "GBattle": "Game/Scenes/Battle"
     }
 });
 
-define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle"],function(KCanvas, KScene, KObject, KKeyboard, GMenu, GBattle){
+define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle", "KAjax"],function(KCanvas, KScene, KObject, KKeyboard, GMenu, GBattle, KAjax){
     var cc = new KCanvas('#leCanvas');
 //     KObject.debug['connect'] = true;
     cc.scenes = {};
+    var x = new KAjax();
     cc.scenes["menu"] = new GMenu();
     cc.scenes["battle"] = new GBattle();
     cc.scene = cc.scenes["menu"];
