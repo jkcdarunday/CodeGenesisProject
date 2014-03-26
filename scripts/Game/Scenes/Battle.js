@@ -114,7 +114,6 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
                     }
                 }
             });
-            this.textViewer.text="Bacon ipsum dolor sit amet tail venison chuck drumstick capicola pig shankle, doner ball tip turducken fatback tri-tip short ribs biltong pork loin. Tail jerky pork loin pork belly ground round ball tip. Pork loin porchetta swine doner, shank boudin\n ribeye fatback. Tail chicken bacon pork belly, turkey boudin bresaola salami beef ribs filet mignon. Brisket pastrami capicola prosciutto leberkas chuck jowl turkey jerky boudin pork loin short loin spare ribs venison shank. Swine\n chuck t-bone, pork chop capicola chicken landjaeger pig ribeye. Bresaola hamburger chicken, tongue meatball shoulder sirloin bacon tri-tip.";
             this.addImage(this.textViewer);
         },
         slots:{
@@ -129,6 +128,9 @@ define(['KObject','KScene', 'KImage', 'KText'], function(KObject, KScene, KImage
                 });
             },
             keyReactor: function(key){
+//                 if(key>'A' && key<'Z'){
+                    this.textViewer.text += String.fromCharCode(key);
+//                 }
             }
         }
     });

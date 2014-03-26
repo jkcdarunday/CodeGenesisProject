@@ -25,7 +25,8 @@ define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle"],function
     KObject.connect(cc.scenes["menu"], "changeScene", cc, "changeScene");
 
     var kb = new KKeyboard(document.body, false);
-    KObject.connect(kb, 'keyDown', cc.scene, 'keyReactor');
+    KObject.connect(kb, 'keyDown', cc.scenes['menu'], 'keyReactor');
+    KObject.connect(kb, 'keyPress', cc.scenes['battle'], 'keyReactor');
     KObject.connect(cc, 'windowResized', cc.scene, 'windowResized');
     cc.start();
     cc.windowSet(window);
