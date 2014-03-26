@@ -20,7 +20,18 @@ define(["KCanvas", "KScene", 'KObject', "KKeyboard","GMenu", "GBattle", "KAjax"]
     var cc = new KCanvas('#leCanvas');
 //     KObject.debug['connect'] = true;
     cc.scenes = {};
+
     var x = new KAjax();
+    var alerter = new KObject();
+    alerter.slots = {
+        print:function(d){
+            alert(d);
+        }
+    };
+    KObject.connect(x, 'finished', alerter, 'print');
+
+    x.requestGet('desu');
+
     cc.scenes["menu"] = new GMenu();
     cc.scenes["battle"] = new GBattle();
     cc.scene = cc.scenes["menu"];

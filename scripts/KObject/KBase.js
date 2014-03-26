@@ -15,7 +15,7 @@
  *   Boston, MA  02110-1301, USA.
  *
  *   ---
- *   Copyright (C) 2014, Jan Keith Darunday <jkcdarunday@uplb.edu.ph>
+ *   Copyright (C) 2014, Aesir Development Team <admin@aesir.url.ph>
  */
 
 define(function(){
